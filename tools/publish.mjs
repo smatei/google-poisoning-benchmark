@@ -60,6 +60,12 @@ function PublishRelease(aDate) {
   const exists = Run('gh', ['release', 'view', aDate], { quiet: true, allowFail: true }).status === 0;
   if (exists) {
     Run('gh', ['release', 'upload', aDate, ...files, '--clobber']);
+    // assets that are no longer built (e.g. a renamed source) are removed from the release
+    const names = fs.readdirSync(dir);
+    const assets = JSON.parse(Run('gh', ['release', 'view', aDate, '--json', 'assets'], { quiet: true }).stdout).assets;
+    for (const asset of assets) {
+      if (!names.includes(asset.name)) Run('gh', ['release', 'delete-asset', aDate, asset.name, '--yes']);
+    }
   } else {
     Run('gh', ['release', 'create', aDate, ...files, '--title', 'Google poisoning benchmark ' + aDate,
       '--notes', 'Pages of every source for ' + aDate + ': scraped/<request>/N.html (page N+1, hard poisoning '

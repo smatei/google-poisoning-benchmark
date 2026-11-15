@@ -9,7 +9,7 @@
 // - release/<date>/<source>.zip: the full pages (scraped/<name>/N.html) and parsed/<name>/serp.json, for the
 //   GitHub release of the day
 //
-// Sources are published with these names: scrapedogoogle -> scrapedo, proserpv2google -> pserp.
+// Sources are published with these names: scrapedogoogle -> scrape.do, dataigoogle -> dat.ai, proserpv2google -> pserp.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,7 +22,7 @@ const kRelease = path.join(kRoot, 'release');
 // the sources of GoogleSearchSamples.kSources; folders like proserpv2google-test are not published
 const kSources = ['browser', 'cloro', 'dataforseo', 'dataigoogle', 'proserpv2google', 'scrapedogoogle', 'scraper',
   'scraperapi'];
-const kRename = { scrapedogoogle: 'scrapedo', proserpv2google: 'pserp' };
+const kRename = { scrapedogoogle: 'scrape.do', dataigoogle: 'dat.ai', proserpv2google: 'pserp' };
 const PublicName = (aSource) => kRename[aSource] || aSource;
 
 const kDatePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -169,6 +169,11 @@ function Main() {
   }
   for (const d of pageDates) {
     fs.mkdirSync(path.join(pagesDir, d), { recursive: true });
+    // zips of sources no longer published (e.g. a renamed source) are removed
+    const expected = SourcesOn(options.samples, d).map((s) => PublicName(s) + '.zip');
+    for (const f of fs.readdirSync(path.join(pagesDir, d))) {
+      if (!expected.includes(f)) fs.rmSync(path.join(pagesDir, d, f), { force: true });
+    }
     for (const source of SourcesOn(options.samples, d)) {
       const file = path.join(pagesDir, d, PublicName(source) + '.zip');
       // a day already built is rebuilt only when asked for (a retry of the day)
