@@ -41,6 +41,9 @@ function PublishSite() {
   fs.rmSync(path.join(kSite, '.git'), { recursive: true, force: true });
   Run('git', ['init', '-q', '-b', 'gh-pages'], { cwd: kSite });
   Run('git', ['remote', 'add', 'origin', remote], { cwd: kSite });
+  // the files are published as built: no CRLF conversion (a global core.autocrlf / core.safecrlf refuses LF files)
+  Run('git', ['config', 'core.autocrlf', 'false'], { cwd: kSite });
+  Run('git', ['config', 'core.safecrlf', 'false'], { cwd: kSite });
   Run('git', ['add', '-A'], { cwd: kSite });
   Run('git', ['commit', '-q', '-m', 'Google poisoning benchmark, last day ' + date], { cwd: kSite });
   Run('git', ['push', '-f', 'origin', 'gh-pages'], { cwd: kSite });
