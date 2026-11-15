@@ -252,7 +252,7 @@ const App = {
   <div v-if="view === 'keywords' && stats" class="head-row">
     <input type="search" v-model="filter" placeholder="Filter keyword / search engine">
     <label><input type="checkbox" v-model="onlyHard"> only with hard poisoning</label>
-    <span class="muted small">{{ samples.length }} samples · cell = hard pages / soft pages / title top 10 ·
+    <span class="muted small">{{ samples.length }} samples ·
       {{ hasPages ? 'click a cell to compare the pages' : 'pages viewable for the last ' + pageDates.length + ' days, older days in Downloads' }}</span>
   </div>
   <div v-if="view === 'compare' && sample" class="head-row">
@@ -311,11 +311,21 @@ const App = {
   </template>
 
   <template v-if="view === 'keywords' && stats">
+    <div class="legend">
+      <b>How to read a cell:</b> <code><b class="hardn">1</b> / <span class="softn">3</span> / 6</code> =
+      <b class="hardn">1</b> hard poisoned page (of the 5 pages, manual review) /
+      <span class="softn">3</span> soft poisoned pages (of the 5, less than half of the browser page domains) /
+      6 of the top 10 titles also in the browser top 10.
+      Lower is better for the first two, higher for the third. <span class="muted">– = the provider has no pages for
+      the request.</span> <span v-if="hasPages">Click a cell to see the pages side by side with the browser.</span>
+    </div>
     <table class="t">
       <thead><tr><th>Keyword</th><th class="left">Search engine</th><th v-for="p in providers" :key="p">{{ p }}</th></tr></thead>
       <tbody><tr v-for="s in samples" :key="s.name">
         <td>{{ s.keyword }}</td><td class="left muted small">{{ s.searchEngine }}</td>
-        <td v-for="p in providers" :key="p" :class="{ cell: hasPages }" @click="hasPages && OpenCompare(s, p)">
+        <td v-for="p in providers" :key="p" :class="{ cell: hasPages }" @click="hasPages && OpenCompare(s, p)"
+          :title="s.sources[p] ? p + ': ' + Count(s.sources[p], 'hard') + ' hard poisoned pages, ' + SoftCount(s.sources[p])
+            + ' soft poisoned pages, ' + s.sources[p].match.title10 + ' of the top 10 titles also in the browser' : ''">
           <template v-if="s.sources[p]">
             <b :class="{ hardn: Count(s.sources[p], 'hard') > 0 }">{{ Count(s.sources[p], 'hard') }}</b> /
             <span :class="{ softn: SoftCount(s.sources[p]) > 0 }">{{ SoftCount(s.sources[p]) }}</span> /
