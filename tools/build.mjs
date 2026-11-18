@@ -20,9 +20,10 @@ const kSite = path.join(kRoot, 'site');
 const kRelease = path.join(kRoot, 'release');
 
 // the sources of GoogleSearchSamples.kSources; folders like proserpv2google-test are not published
-const kSources = ['browser', 'cloro', 'dataforseo', 'dataigoogle', 'proserpv2google', 'scrapedogoogle', 'scraper',
-  'scraperapi'];
-const kRename = { scrapedogoogle: 'scrape.do', dataigoogle: 'dat.ai', proserpv2google: 'pserp' };
+const kSources = ['browser', 'cloro', 'dataforseo', 'dataforseo-resolve-poisoned', 'dataigoogle', 'proserpv2google',
+  'scrapedogoogle', 'scraper', 'scraperapi'];
+const kRename = { scrapedogoogle: 'scrape.do', dataigoogle: 'dat.ai', proserpv2google: 'pserp',
+  'dataforseo-resolve-poisoned': 'dataforseo-rp' };
 const PublicName = (aSource) => kRename[aSource] || aSource;
 
 const kDatePattern = /^\d{4}-\d{2}-\d{2}$/;

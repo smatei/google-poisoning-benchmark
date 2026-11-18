@@ -21,8 +21,9 @@ review), soft poisoning (Nozzle method) and the match of the results with the br
 `site/data/`: `dates.json`, `pages.json` (days with pages), `summary.json` (trend),
 `stats/<date>.json`, `pages/<date>/<source>.zip` (pages without scripts, read with HTTP range requests).
 
-Sources are published as: `browser`, `cloro`, `dataforseo`, `dat.ai` (dataigoogle), `pserp` (proserpv2google),
-`scraper`, `scraperapi`, `scrape.do` (scrapedogoogle).
+Sources are published as: `browser`, `cloro`, `dataforseo`, `dataforseo-rp` (dataforseo-resolve-poisoned: dataforseo
+with `"resolve_poisoned_results": true`), `dat.ai` (dataigoogle), `pserp` (proserpv2google), `scraper`, `scraperapi`,
+`scrape.do` (scrapedogoogle).
 
 ## Every day
 
