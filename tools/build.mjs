@@ -9,7 +9,8 @@
 // - release/<date>/<source>.zip: the full pages (scraped/<name>/N.html) and parsed/<name>/serp.json, for the
 //   GitHub release of the day
 //
-// Sources are published with these names: scrapedogoogle -> scrape.do, dataigoogle -> dat.ai, proserpv2google -> pserp.
+// Sources are published with these names: scrapedogoogle -> scrape.do, dataigoogle -> dat.ai, proserpv2google -> pserp,
+// proserpv2google-test -> pserp-test.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,11 +20,11 @@ const kRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const kSite = path.join(kRoot, 'site');
 const kRelease = path.join(kRoot, 'release');
 
-// the sources of GoogleSearchSamples.kSources; folders like proserpv2google-test are not published
+// the sources of GoogleSearchSamples.kSources; copies like proserpv2google-copy are not published
 const kSources = ['browser', 'cloro', 'dataforseo', 'dataforseo-resolve-poisoned', 'dataigoogle', 'proserpv2google',
-  'scrapedogoogle', 'scraper', 'scraperapi'];
+  'proserpv2google-test', 'scrapedogoogle', 'scraper', 'scraperapi'];
 const kRename = { scrapedogoogle: 'scrape.do', dataigoogle: 'dat.ai', proserpv2google: 'pserp',
-  'dataforseo-resolve-poisoned': 'dataforseo-rp' };
+  'proserpv2google-test': 'pserp-test', 'dataforseo-resolve-poisoned': 'dataforseo-rp' };
 const PublicName = (aSource) => kRename[aSource] || aSource;
 
 const kDatePattern = /^\d{4}-\d{2}-\d{2}$/;
