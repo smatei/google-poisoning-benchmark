@@ -1,7 +1,7 @@
 // Builds the GitHub Pages site (site/) and the release archives (release/) of the google poisoning benchmark
 // from the samples folder of GoogleSearchSamples / GoogleSamplesBenchmark (serpservice).
 //
-//   node tools/build.mjs [date ...] [--samples=D:\_webgit\awr\test-google-samples] [--keep=4] [--no-release]
+//   node tools/build.mjs [date ...] [--samples=D:\_webgit\awr\test-google-samples] [--keep=3] [--no-release]
 //
 // - date: the days to (re)build the release archives for; default: the newest day with statistics
 // - site/data/stats/<date>.json: the statistics of every day (stats\<date>.json, written by GoogleSamplesBenchmark)
@@ -29,7 +29,7 @@ const PublicName = (aSource) => kRename[aSource] || aSource;
 const kDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 function ParseArgs() {
-  const options = { samples: 'D:\\_webgit\\awr\\test-google-samples', keep: 4, release: true, dates: [],
+  const options = { samples: 'D:\\_webgit\\awr\\test-google-samples', keep: 3, release: true, dates: [],
     maxSamples: 0 };
   for (const arg of process.argv.slice(2)) {
     if (arg.startsWith('--samples=')) options.samples = arg.slice(10);
