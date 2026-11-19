@@ -20,7 +20,8 @@ const kRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const kSite = path.join(kRoot, 'site');
 const kRelease = path.join(kRoot, 'release');
 
-// the sources of GoogleSearchSamples.kSources; copies like proserpv2google-copy are not published
+// the sources of GoogleSearchSamples.kSources; the other folders (e.g. the organic sources, scraperapi-organic) are
+// not published
 const kSources = ['browser', 'cloro', 'dataforseo', 'dataforseo-resolve-poisoned', 'dataigoogle', 'proserpv2google',
   'proserpv2google-test', 'scrapedogoogle', 'scraper', 'scraperapi'];
 const kRename = { scrapedogoogle: 'scrape.do', dataigoogle: 'dat.ai', proserpv2google: 'pserp',
