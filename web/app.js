@@ -4,6 +4,9 @@ import { unzip } from 'https://cdn.jsdelivr.net/npm/unzipit@1.4.3/dist/unzipit.m
 
 const kRepo = 'smatei/google-poisoning-benchmark';
 const kPages = [1, 2, 3, 4, 5];
+// sources removed from the benchmark, hidden also in the days published before (pserp-test, until the provider asks)
+const kHiddenSources = ['pserp-test'];
+const IsShown = (aSource) => aSource !== 'browser' && !kHiddenSources.includes(aSource);
 
 const VIEWS = [
   { key: 'overview', label: 'Overview' },
@@ -96,14 +99,14 @@ const App = {
     };
   },
   computed: {
-    providers() { return this.stats ? this.stats.sources.filter((s) => s !== 'browser') : []; },
+    providers() { return this.stats ? this.stats.sources.filter(IsShown) : []; },
     overviewRows() {
       return this.providers.map((p) => ({ source: p, ...Summarize(this.stats.summary[p]) }))
         .filter((r) => r.pages !== undefined).sort((a, b) => b.title10 - a.title10);
     },
     trendProviders() {
       const set = new Set();
-      this.summaries.forEach((t) => Object.keys(t.summary).forEach((s) => s !== 'browser' && set.add(s)));
+      this.summaries.forEach((t) => Object.keys(t.summary).forEach((s) => IsShown(s) && set.add(s)));
       return [...set].sort();
     },
     samples() {
@@ -385,7 +388,7 @@ const App = {
       <tbody><tr v-for="t in summaries.slice().reverse()" :key="t.date">
         <td>{{ t.date }}</td>
         <td class="left"><a :href="'data/stats/' + t.date + '.json'" :download="'stats-' + t.date + '.json'">stats-{{ t.date }}.json</a></td>
-        <td class="left"><template v-for="(s, i) in ['browser', ...Object.keys(t.summary).filter(x => x !== 'browser').sort()]" :key="s">
+        <td class="left"><template v-for="(s, i) in ['browser', ...Object.keys(t.summary).filter(IsShown).sort()]" :key="s">
           <span v-if="i"> · </span><a :href="ReleaseUrl(t.date, s)">{{ s }}.zip</a></template></td>
       </tr></tbody>
     </table></div>
