@@ -4,8 +4,9 @@ import { unzip } from 'https://cdn.jsdelivr.net/npm/unzipit@1.4.3/dist/unzipit.m
 
 const kRepo = 'smatei/google-poisoning-benchmark';
 const kPages = [1, 2, 3, 4, 5];
-// sources removed from the benchmark, hidden also in the days published before (pserp-test, until the provider asks)
-const kHiddenSources = ['pserp-test'];
+// sources removed from the benchmark, hidden also in the days published before (none now: pserp-test shown again
+// from 2026-11-23, no day published before has it)
+const kHiddenSources = [];
 const IsShown = (aSource) => aSource !== 'browser' && !kHiddenSources.includes(aSource);
 
 const VIEWS = [
