@@ -22,8 +22,9 @@ review), soft poisoning (Nozzle method) and the match of the results with the br
 `stats/<date>.json`, `pages/<date>/<source>.zip` (pages without scripts, read with HTTP range requests).
 
 Sources are published as: `browser`, `cloro`, `dataforseo`, `dataforseo-rp` (dataforseo-resolve-poisoned: dataforseo
-with `"resolve_poisoned_results": true`), `dat.ai` (dataigoogle), `pserp` (proserpv2google), `pserp-test`
-(proserpv2google-test: proserpv2google with `"engine": "test"`), `scraper`, `scraperapi`, `scrape.do` (scrapedogoogle).
+with `"resolve_poisoned_results": true`), `dat.ai` (dataigoogle), `oxylabs` (Web Scraper API realtime, source google
+with the url), `pserp` (proserpv2google), `pserp-test` (proserpv2google-test: proserpv2google with `"engine": "test"`),
+`scraper`, `scraperapi`, `scrape.do` (scrapedogoogle).
 
 ## Every day
 

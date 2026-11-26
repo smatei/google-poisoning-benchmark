@@ -22,8 +22,8 @@ const kRelease = path.join(kRoot, 'release');
 
 // the sources of GoogleSearchSamples.kSources; the other folders (e.g. the organic sources, scraperapi-organic) are
 // not published
-const kSources = ['browser', 'cloro', 'dataforseo', 'dataforseo-resolve-poisoned', 'dataigoogle', 'proserpv2google',
-  'proserpv2google-test', 'scrapedogoogle', 'scraper', 'scraperapi'];
+const kSources = ['browser', 'cloro', 'dataforseo', 'dataforseo-resolve-poisoned', 'dataigoogle', 'oxylabs',
+  'proserpv2google', 'proserpv2google-test', 'scrapedogoogle', 'scraper', 'scraperapi'];
 const kRename = { scrapedogoogle: 'scrape.do', dataigoogle: 'dat.ai', proserpv2google: 'pserp',
   'proserpv2google-test': 'pserp-test', 'dataforseo-resolve-poisoned': 'dataforseo-rp' };
 const PublicName = (aSource) => kRename[aSource] || aSource;
