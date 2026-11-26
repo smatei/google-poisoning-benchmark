@@ -15,7 +15,7 @@ review), soft poisoning (Nozzle method) and the match of the results with the br
 |---|---|
 | `web/` | the site (Vue 3, no build step); `app.js` reads `data/` |
 | `tools/build.mjs` | builds `site/` (web + data) and `release/<date>/` from the samples folder |
-| `tools/publish.mjs` | pushes `site/` to the `gh-pages` branch (one commit, no history) and uploads the releases |
+| `tools/publish.mjs` | pushes `site/` to the `gh-pages` branch (one commit, no history), uploads the releases and deletes the local `release/<date>/` already on GitHub, except the newest (`--no-cleanup` keeps them) |
 | `site/`, `release/` | generated, not committed on `main` |
 
 `site/data/`: `dates.json`, `pages.json` (days with pages), `summary.json` (trend),

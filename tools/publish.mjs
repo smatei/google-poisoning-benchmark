@@ -3,9 +3,11 @@
 //   no history, so the repository does not grow with the pages of every day
 // - release/<date>/*.zip are uploaded to the GitHub release <date> (created if missing), with the gh CLI
 //
-//   node tools/publish.mjs [date ...] [--no-site] [--no-release]
+//   node tools/publish.mjs [date ...] [--no-site] [--no-release] [--no-cleanup]
 //
 // date: the releases to upload; default: every folder in release/.
+// - after the upload, release/<date> folders are deleted locally (they are on GitHub), except the newest kKeepReleases,
+//   only when the GitHub release <date> has every file of the folder with the same size; --no-cleanup keeps them
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -15,6 +17,9 @@ const kRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const kSite = path.join(kRoot, 'site');
 const kRelease = path.join(kRoot, 'release');
 const kDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+
+// the newest release/<date> folders kept locally after the upload
+const kKeepReleases = 1;
 
 function Run(aCommand, aArgs, aOptions = {}) {
   console.log('> ' + aCommand + ' ' + aArgs.join(' '));
@@ -73,6 +78,29 @@ function PublishRelease(aDate) {
   }
 }
 
+// The release/<date> folders already on GitHub are deleted, except the newest kKeepReleases: a folder is deleted only
+// when the release <date> has every file of it, with the same size.
+function CleanupReleases() {
+  if (!fs.existsSync(kRelease) || !HasGh()) return;
+  const all = fs.readdirSync(kRelease).filter((d) => kDatePattern.test(d)).sort();
+  for (const d of all.slice(0, Math.max(0, all.length - kKeepReleases))) {
+    const dir = path.join(kRelease, d);
+    const view = Run('gh', ['release', 'view', d, '--json', 'assets'], { quiet: true, allowFail: true });
+    if (view.status !== 0) {
+      console.log('release ' + d + ': kept locally (not on GitHub)');
+      continue;
+    }
+    const sizes = new Map(JSON.parse(view.stdout).assets.map((a) => [a.name, a.size]));
+    const missing = fs.readdirSync(dir).filter((f) => sizes.get(f) !== fs.statSync(path.join(dir, f)).size);
+    if (missing.length) {
+      console.log('release ' + d + ': kept locally, not uploaded (or another size): ' + missing.join(', '));
+      continue;
+    }
+    fs.rmSync(dir, { recursive: true, force: true });
+    console.log('release ' + d + ': deleted locally (on GitHub)');
+  }
+}
+
 function Main() {
   const args = process.argv.slice(2);
   const dates = args.filter((a) => kDatePattern.test(a));
@@ -80,6 +108,7 @@ function Main() {
   if (!args.includes('--no-release')) {
     const all = fs.existsSync(kRelease) ? fs.readdirSync(kRelease).filter((d) => kDatePattern.test(d)).sort() : [];
     for (const d of dates.length ? dates : all) PublishRelease(d);
+    if (!args.includes('--no-cleanup')) CleanupReleases();
   }
 }
 
