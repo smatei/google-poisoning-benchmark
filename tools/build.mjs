@@ -10,7 +10,9 @@
 //   GitHub release of the day
 //
 // Sources are published with these names: scrapedogoogle -> scrape.do, dataigoogle -> dat.ai, proserpv2google -> pserp,
-// proserpv2google-test -> pserp-test (proserp "engine": "test", a request per keyword with numPages, from 2026-11-23).
+// proserpv2google-test -> pserp-test (proserp "engine": "test", a request per keyword with numPages, from 2026-11-23),
+// scraper -> scraper.com, scraperapi -> scraperapi.com, cloro -> cloro.ai (from 2026-11-27, every day rebuilt),
+// dataigoogle-city -> dat.ai-geo (dat.ai with the latitude / longitude in "geo"; every day that has it).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,10 +24,11 @@ const kRelease = path.join(kRoot, 'release');
 
 // the sources of GoogleSearchSamples.kSources; the other folders (e.g. the organic sources, scraperapi-organic) are
 // not published
-const kSources = ['browser', 'cloro', 'dataforseo', 'dataforseo-resolve-poisoned', 'dataigoogle', 'oxylabs',
-  'proserpv2google', 'proserpv2google-test', 'scrapedogoogle', 'scraper', 'scraperapi'];
+const kSources = ['browser', 'cloro', 'dataforseo', 'dataforseo-resolve-poisoned', 'dataigoogle', 'dataigoogle-city',
+  'decodo', 'oxylabs', 'proserpv2google', 'proserpv2google-test', 'scrapedogoogle', 'scraper', 'scraperapi'];
 const kRename = { scrapedogoogle: 'scrape.do', dataigoogle: 'dat.ai', proserpv2google: 'pserp',
-  'proserpv2google-test': 'pserp-test', 'dataforseo-resolve-poisoned': 'dataforseo-rp' };
+  'proserpv2google-test': 'pserp-test', 'dataforseo-resolve-poisoned': 'dataforseo-rp', scraper: 'scraper.com',
+  scraperapi: 'scraperapi.com', cloro: 'cloro.ai', 'dataigoogle-city': 'dat.ai-geo' };
 const PublicName = (aSource) => kRename[aSource] || aSource;
 
 const kDatePattern = /^\d{4}-\d{2}-\d{2}$/;
